@@ -54,73 +54,7 @@ void drawMatrix(){
 }
 
 //how to add Player specificity?
-void playerPrompt(){
-    int number;
-    cout << "Enter number on grid: " << endl;
-    cin >> number;
-    updateGrid(number);
-    //didWin(number);
-    
-}
 
-bool checkHorizontals(){
-    //check the three rows;
-    for(int i = 0; i < 3; i++){
-        if((matrix[i][0] == matrix[i][1]) && (matrix[i][0] == matrix[i][2])){
-            winner = matrix[i][0];
-            return true;
-            
-        }
-        
-    }
-    
-    return false;
-}
-
-bool checkVerticals(){
-    //check the three columns
-    for(int j= 0; j < 3; j++){
-        if((matrix[0][j] == matrix[1][j]) && (matrix[0][j] == matrix[2][j])){
-            winner = matrix[0][j];
-            return true;
-        }
-        
-    }
-    return false;
-}
-
-
-bool checkDiagonals(){
-    //check first diagonal
-    if((matrix[0][0] == matrix[1][1]) && (matrix[0][0] == matrix[2][2])){
-        winner = matrix[0][0];
-        return true;
-        //check second diagonal
-    }else if((matrix[0][2] == matrix[1][1]) && (matrix[0][2] == matrix[2][0])){
-        winner = matrix[0][2];
-        return true;
-    }else{
-        return false;
-    }
-}
-
-//room for improvement in terms of more efficient code
-bool checkForWin(){
-    bool horizontalCheck = checkHorizontals();
-    bool verticalCheck = checkVerticals();
-    bool diagCheck = checkDiagonals();
-
-    if(horizontalCheck == true){
-        return true;
-    }else if(verticalCheck == true){
-        return true;
-    }else if(diagCheck == true){
-        return true;
-    }//add another condition for exiting game?
-    else{
-        return false;
-    }
-}
 
 void updateGrid(int num){
     //printf("\033c"); //command to clear screen
@@ -131,22 +65,26 @@ void updateGrid(int num){
         cout << "Cannot overwrite. Enter another number" << endl;
         //keep counter same. shouldn't increment.
         counter = counter - 1;
-
-        //also keep symbol same because it is the same turn
-    }
-    else if((*(ptr+num) >=9) || (*(ptr+num) < 1)){
-        counter = 10;
-    }
-    else{
+        //keep symbol same because it is the same turn
+    }else{
         *(ptr +num) = symbol;
         system("clear");//clear the screen before re-drawing
+        //cout << *(ptr+num) << endl;
         drawMatrix();
-        changeSymbol();//only change symbol on a good turn
+        playerDidWin = checkForWin();
+        //add a check for win
+        //to prevent a message for next user's turn if game has ended
+        if((playerDidWin == false) && (counter <8)){
+            changeSymbol();//only change symbol on a good turn
+
+        }
+        
+        
     }
     
 }
 
-void changeSymbol(){
+void changeSymbol(){//have to stop it from outputting another player's turn even after game has ended
     if(symbol == symbols[0]){
         symbol = symbols[1];
         cout << "It's player " << symbol<< "'s turn" << endl; 
@@ -168,6 +106,26 @@ void announceWinner(){
         cout << "No winner. It's a tie!" << endl;
     }
 }
+/*
+void mainScreen(){
+    int choice;
+    cout << "|||Welcome|||" << endl;
+    cout << "Choose an option: " << endl;
+    cout << "1. Two Player Game" << endl;
+    cout << "2. One Player Game" << endl;
+    cout << "3. Exit" << endl;
+    cin >> choice;
+
+    if(choice == 1){
+        //execute two player game
+    } else if(choice == 2){
+        //execute one player game
+    }else{
+        //exit
+    }
+
+}
+*/
 
 int main(){
     char a;
@@ -180,14 +138,21 @@ int main(){
     //int counter = 0;//maybe declare this outside so it can be accessed from 
     //other functions
     while(!(playerDidWin == true) && (counter < 9)){
-        // printf("\033c"); //command to clear screen
-        playerPrompt();
+        
+        playerPrompt();//call the updateGrid, which calls changeSymbol
+        //therefore changeSymbol outputs the message of next player's turn
         //changeSymbol();put this func call in updategrid
         playerDidWin = checkForWin();//prevents from exiting the game before
         counter++;
+        //cout << counter << endl;
         
     }
-    //cout << counter << endl;
+    announceWinner();
+    /*
+    game = new Game();//save the last updated grid 
+    player object: 
+    
+   */
    
 
     return 0;
@@ -198,9 +163,11 @@ int main(){
 
 TODO:
 
-1. OpenGL explore..
-2. Class inheritance - 
-3. Option to play again...Home Screen
-4. 
+Agenda for Today - 07/21/2020
+
+1. 1-player game against computer- finish move function 
+2. Classes for player profiles and game
+3. Grail, Opengl
+4.
 
 */
