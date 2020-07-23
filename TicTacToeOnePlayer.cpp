@@ -1,4 +1,5 @@
 //Co Authored by Siva B and Jenn Lloyd
+//Game play against computer
 #include <iostream>
 #include <stdlib.h> 
 using namespace std;
