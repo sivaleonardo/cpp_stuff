@@ -143,7 +143,7 @@ bool checkForWin(){
     }
 }
 
-viableMoves(char symbol){
+void viableMoves(char symbol, int num){
     char* ptr = &matrix[0][0];
     //should check based off that position if hor, vert, diag = symbol[1] and not symbol[0] 
     //horizontal
@@ -189,8 +189,20 @@ viableMoves(char symbol){
     //choose matrix[2][0]
     }
     //else if check if symbol[0] is 2 in a row play next to it
-    //else random 
+    //trying to think about this- whether we loop through the matrix- i know our pointer is involved somewhere
+    //this code v is just a brainstorm def not right 
+    for(int i=0; i<3; i++){
+        for(int j=0; j<3; j++){ 
+            if((ptr = ptr +1)){
+                //choose matrix before?
 
+            }
+            else if((ptr = ptr -1))
+            //choose matrix after?
+        }
+    }
+    //else random 
+    
 }
 
 void ComputerMove(){
