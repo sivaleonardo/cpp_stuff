@@ -131,22 +131,23 @@ void updateGrid(int num){
         cout << "Cannot overwrite. Enter another number" << endl;
         //keep counter same. shouldn't increment.
         counter = counter - 1;
-
-        //also keep symbol same because it is the same turn
-    }
-    else if((*(ptr+num) >=9) || (*(ptr+num) < 1)){
-        counter = 10;
-    }
-    else{
+        //keep symbol same because it is the same turn
+    }else{
         *(ptr +num) = symbol;
         system("clear");//clear the screen before re-drawing
+        //cout << *(ptr+num) << endl;
         drawMatrix();
-        changeSymbol();//only change symbol on a good turn
+        playerDidWin = checkForWin();
+        //add a check for win
+        //to prevent a message for next user's turn if game has ended
+        if((playerDidWin == false) && (counter <8)){
+            changeSymbol();//only change symbol on a good turn
+
+        } 
     }
-    
 }
 
-void changeSymbol(){
+void changeSymbol(){//have to stop it from outputting another player's turn even after game has ended
     if(symbol == symbols[0]){
         symbol = symbols[1];
         cout << "It's player " << symbol<< "'s turn" << endl; 
@@ -169,6 +170,7 @@ void announceWinner(){
     }
 }
 
+
 int main(){
     char a;
     drawMatrix();
@@ -180,16 +182,17 @@ int main(){
     //int counter = 0;//maybe declare this outside so it can be accessed from 
     //other functions
     while(!(playerDidWin == true) && (counter < 9)){
-        // printf("\033c"); //command to clear screen
-        playerPrompt();
+        
+        playerPrompt();//call the updateGrid, which calls changeSymbol
+        //therefore changeSymbol outputs the message of next player's turn
         //changeSymbol();put this func call in updategrid
         playerDidWin = checkForWin();//prevents from exiting the game before
         counter++;
+        //cout << counter << endl;
         
     }
-    //cout << counter << endl;
-   
-
+    announceWinner();
+    
     return 0;
 
 }
@@ -198,9 +201,11 @@ int main(){
 
 TODO:
 
-1. OpenGL explore..
-2. Class inheritance - 
-3. Option to play again...Home Screen
-4. 
+Agenda for Today - 07/21/2020
+
+1. 1-player game against computer- finish move function 
+2. Classes for player profiles and game
+3. Grail, Opengl
+4.
 
 */
