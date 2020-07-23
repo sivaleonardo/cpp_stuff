@@ -1,3 +1,4 @@
+//Co Authored by Siva B and Jenn Lloyd
 #include <iostream>
 #include <stdlib.h> 
 using namespace std;
@@ -141,11 +142,10 @@ bool checkForWin(){
         return false;
     }
 }
-/*
-//viableMoves(char symbol){
+
+viableMoves(char symbol){
     char* ptr = &matrix[0][0];
     //should check based off that position if hor, vert, diag = symbol[1] and not symbol[0] 
-    if
     //horizontal
     for(int i = 0; i < 3; i++){
         if((matrix[i][0] == symbols[1]) && (matrix[i][1] == symbols[1])){
@@ -156,12 +156,43 @@ bool checkForWin(){
         else if((matrix[i][0] == symbols[1]) && (matrix[i][2] == symbols[1])){
             //choose matrix[i][1]
         }
-        
+    }
+    //vertical
+    for(int j= 0; j < 3; j++){
+        if((matrix[0][j] == symbols[1]) && (matrix[1][j]==symbols[1])){
+            //choose matrix[2][j]
+        }
+         else if((matrix [0][j] ==symbols[1])&& (matrix[2][j] ==symbols[1])){
+         //choose matrix[1][j]
+         }
+        else if((matrix[1][j] ==symbols[1])&& (matrix[2][j] == symbols[1])){
+            //choose matrix[0][j]
+        }
+    }
+    //diagonal
+    if(( matrix[1][1]==symbols[1]) && (matrix[0][0] == symbols[1])){
+        //choose matrix [2][2] 
+    }
+    else if ((matrix[1][1]==symbols[1]) && (matrix[2][2] == symbols[1])){
+    //choose matrix [0][0]
+    }
+    else if((matrix[2][2]==symbols[1]) && (matrix[0][0] == symbols[1])){
+    //choose matrix[1][1]
+    }
+    else if((matrix[0][2] == symbols[1]) && (matrix[2][0]==symbols[1])){
+    //choose matrix[1][1]
+    }
+    else if((matrix[1][1] == symbols[1]) && (matrix[2][0]==symbols[1])){
+    //choose matrix[0][2]
+    }
+    else if((matrix[0][2] == symbols[1]) && (matrix[0][2]==symbols[1])){
+    //choose matrix[2][0]
+    }
     //else if check if symbol[0] is 2 in a row play next to it
     //else random 
 
 }
-*/
+
 void ComputerMove(){
     char* ptr = &matrix[0][0];
     comp = rand() % 9;
@@ -233,4 +264,8 @@ int main(){
 
 }
 
+<<<<<<< HEAD
 //
+=======
+//
+>>>>>>> 06be9c334690221116e41517164a00b0d8d903b7
