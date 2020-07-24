@@ -12,6 +12,7 @@ int counter = 0;
 int comp =0;
 
 
+
 //function to draw the grid for tic-tac-toe
 void drawMatrix();
 
@@ -144,83 +145,125 @@ bool checkForWin(){
     }
 }
 
-void viableMoves(char symbol, int num){
+/*
+bool viableMove(int num){
+    bool isViable = true;
     char* ptr = &matrix[0][0];
-    //should check based off that position if hor, vert, diag = symbol[1] and not symbol[0] 
-    //horizontal
-    for(int i = 0; i < 3; i++){
-        if((matrix[i][0] == symbols[1]) && (matrix[i][1] == symbols[1])){
-            //choose matrix[i][2]
-        }else if((matrix[i][1] == symbols[1]) && (matrix[i][2] == symbols[1])){
-            //choose matrix[i][0]
-        }
-        else if((matrix[i][0] == symbols[1]) && (matrix[i][2] == symbols[1])){
-            //choose matrix[i][1]
-        }
-    }
-    //vertical
-    for(int j= 0; j < 3; j++){
-        if((matrix[0][j] == symbols[1]) && (matrix[1][j]==symbols[1])){
-            //choose matrix[2][j]
-        }
-         else if((matrix [0][j] ==symbols[1])&& (matrix[2][j] ==symbols[1])){
-         //choose matrix[1][j]
-         }
-        else if((matrix[1][j] ==symbols[1])&& (matrix[2][j] == symbols[1])){
-            //choose matrix[0][j]
-        }
-    }
-    //diagonal
-    if(( matrix[1][1]==symbols[1]) && (matrix[0][0] == symbols[1])){
-        //choose matrix [2][2] 
-    }
-    else if ((matrix[1][1]==symbols[1]) && (matrix[2][2] == symbols[1])){
-    //choose matrix [0][0]
-    }
-    else if((matrix[2][2]==symbols[1]) && (matrix[0][0] == symbols[1])){
-    //choose matrix[1][1]
-    }
-    else if((matrix[0][2] == symbols[1]) && (matrix[2][0]==symbols[1])){
-    //choose matrix[1][1]
-    }
-    else if((matrix[1][1] == symbols[1]) && (matrix[2][0]==symbols[1])){
-    //choose matrix[0][2]
-    }
-    else if((matrix[0][2] == symbols[1]) && (matrix[0][2]==symbols[1])){
-    //choose matrix[2][0]
-    }
-    //else if check if symbol[0] is 2 in a row play next to it
-    //trying to think about this- whether we loop through the matrix- i know our pointer is involved somewhere
-    //this code v is just a brainstorm def not right 
-    for(int i=0; i<3; i++){
-        for(int j=0; j<3; j++){ 
-            if((ptr = ptr +1)){
-                //choose matrix before?
+    //horizontal check
 
+    switch(num) {
+        case 0 : 
+            if((*(ptr+num+1) == symbols[1]) && (*(ptr+num+2) == symbols[1])){
+                isViable = true;//set true if two of comp symbols in a row
+            }else if((*(ptr+num+1) == symbols[0]) && (*(ptr+num+2) == symbols[0])){
+                isViable = true;//set also true if opponent symbols in a row
+            }else if ((*(ptr+num+3) == symbols[1]) && (*(ptr+num+6) == symbols[1])){
+                isViable = true;
+            }else if ((*(ptr+num+3) == symbols[0]) && (*(ptr+num+6) == symbols[0])){
+                isViable = true;
+            }else if ((*(ptr+num+4) == symbols[1]) && (*(ptr+num+8) == symbols[1])){
+                isViable = true;
+            }else if ((*(ptr+num+4) == symbols[0]) && (*(ptr+num+8) == symbols[0])){
+                isViable = true;
+            }else{
+                isViable = false;
             }
-            else if((ptr = ptr -1))
-            //choose matrix after?
-        }
     }
-    //else random 
     
 }
 
+
+
+bool twoInARow(int i){
+    
+    if((matrix[i][0] == matrix[i][1]) || (matrix[i][0] == matrix[i][2])){
+        return true;
+    }
+    return false;
+
+}
+
+bool twoInAColumn(int j){
+    
+    if((matrix[0][j] == matrix[1][j]) || (matrix[0][j] == matrix[2][j])){
+            return true;
+    }
+    return false;
+}
+
+bool twoInADiagonal(){
+    if((matrix[0][0] == matrix[1][1]) || (matrix[0][0] == matrix[2][2]) || (matrix[1][1] == matrix[2][2])){
+        return true;
+    }else if((matrix[0][2] == matrix[1][1]) || (matrix[0][2] == matrix[2][0]) || (matrix[1][1] == matrix[2][0])){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
+bool checkPattern(){
+    bool rowCheck = false;
+    bool colCheck = false;
+    bool diagCheck = twoInADiagonal();
+
+    int row;
+    int col;
+    //checking two in a row and setting the computer move to next free row spot 
+    for(int i = 0; i<3; i++){
+        rowCheck = twoInARow(i);
+        if(rowCheck == true){
+            row = i;
+            break;
+        }     
+    }
+    for(int j = 0; j<3; j++){
+        if((matrix[row][j] != symbols[0]) || (matrix[row][j] != symbols[1])){
+            matrix[row][j] = symbols[1];
+        }
+    }
+
+    //checking two in a column and setting computer move
+    for(int j=0;j<3;j++){
+        colCheck=twoInAColumn(j);
+        if(colCheck==true){
+            col =j;
+            break;
+        }      
+    }
+    for(int i=0; i<3;i++){
+         if((matrix[i][col] != symbols[0]) || (matrix[i][col] != symbols[1])){
+            matrix[i][col] = symbols[1];
+        }
+    }
+
+    //checking two in a diagonal
+
+        
+    //checkPattern will go through whole grid to find any potential patterns
+
+
+    
+}
+*/
 void ComputerMove(){
+    //called for first random move it makes 
     char* ptr = &matrix[0][0];
+    srand(time(NULL));
     comp = rand() % 9;
+    cout << comp << endl;
     //check for a good position on grid
     if(*(ptr+comp) == symbols[0] || *(ptr+comp) == symbols[1]){
         //code for rewriting
         counter = counter - 1;
         //keep symbol same because it is the same turn
         comp = rand() % 9;
-    }
-    else {
         *(ptr + comp) = symbols[1];
-
+        //cout << comp << endl;
     }
-    
+    else{
+        *(ptr + comp) = symbols[1];
+    }
     
 }
 void updateGrid(int num){
@@ -277,8 +320,4 @@ int main(){
 
 }
 
-<<<<<<< HEAD
-//
-=======
-//
->>>>>>> 06be9c334690221116e41517164a00b0d8d903b7
+
