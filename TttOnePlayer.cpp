@@ -2,6 +2,8 @@
 //Game play against computer
 #include <iostream>
 #include <stdlib.h> 
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <time.h> 
 using namespace std;
 char matrix[3][3] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 char symbol;
@@ -11,6 +13,7 @@ char winner;
 int counter = 0;
 int comp =0;
 int comp_row, comp_col;
+int d;//variable for identifying diagonal
 
 
 
@@ -194,7 +197,8 @@ bool twoInAColumn(int j){
 }
 
 bool twoInADiagonal(){
-    if((matrix[0][0] == matrix[1][1]) || (matrix[0][0] == matrix[2][2]) || (matrix[1][1] == matrix[2][2])){
+    if((matrix[0][0] == matrix[1][1]) || (matrix[0][0] == matrix[2][2]) || (matrix[1][1] == matrix[2][2])){//primary diag with [0][0]
+        d=1;
         return true;
     }else if((matrix[0][2] == matrix[1][1]) || (matrix[0][2] == matrix[2][0]) || (matrix[1][1] == matrix[2][0])){
         return true;
@@ -207,23 +211,26 @@ bool isPotentialPattern(){
     bool rowCheck;
     bool colCheck;
     bool diagCheck = twoInADiagonal();
-    int row, col;
+    int row;
+    int col;
 
     //go through rows of grid to see if any instances of two-in-a-row
     for(int i=0; i<3; i++){
         rowCheck = twoInARow(i);
         if(rowCheck == true){
             row = i;
-            break;
+            for(int j = 0; j<3; j++){
+                if(isEmpty(matrix[row][j]) == true){
+                    comp_row = row;
+                    comp_col = j;
+                    return true;
+                }
+            }
         }
     }
     //go through the single row to see if third spot is empty
     //return true if empty so computer can move there
-    for(int j = 0; j<3; j++){
-        if(isEmpty(matrix[row][j] == true)){
-            return true;
-        }
-    }
+    
 
 
     //go through columns of grid to see if any instances of two-in-a-column
@@ -231,26 +238,44 @@ bool isPotentialPattern(){
         colCheck = twoInAColumn(j);
         if(colCheck == true){
             col = j;
-            break;
+            for(int i = 0; i<3; i++){
+                if(isEmpty(matrix[i][col]) == true){
+                    comp_row = i;
+                    comp_col = col;
+                    return true;
+                 }
+            }
         }
     }
-
-    for(int i = 0; i<3; i++){
-        if(isEmpty(matrix[i][col] == true)){
-            return true;
+/*
+    rowCheck = twoInARow(i);
+    diagCheck = twoInADiagonal();
+    
+*/  if(diagCheck ==true){
+        if(d==1){
+            //checking 1st primary diagonal
+            for(int i=0; i<3;i++){
+                if(isEmpty(matrix[i][i])==true){
+                    comp_row=i;
+                    comp_col=i;
+                    return true;
+                }
+            }
         }
+        else{
+            for(int i=0; i<3;i++){
+                if(isEmpty(matrix[i][2-i])==true){
+                    comp_row=i;
+                    comp_col=2-i;
+                    return true;
+                }
+            }
+        }
+    
     }
 
     return false;
-
-/*
-    if((rowCheck == true) || (colCheck == true) || (diagCheck == true)){
-        return true;
-
-    }else{
-        return false;
-    }
-*/    
+ 
 
 }
 
@@ -259,7 +284,7 @@ bool isPotentialPattern(){
 void computerMoveRandom(){
     //called for first random move it makes 
     char* ptr = &matrix[0][0];
-    bool isTaken = true;
+    bool isTaken = true;//true-triggers while loop
     srand(time(NULL));
     
     while(isTaken){
@@ -328,7 +353,8 @@ void updateGrid(int num){
         //change the symbol
         //computer's move against the player
         playerDidWin = checkForWin();
-        computerMoveRandom();
+        //computerMoveRandom();
+        computerMoveStrat();
         system("clear");//clear the screen before re-drawing
         //cout << *(ptr+num) << endl;
         drawMatrix();
